@@ -4,6 +4,7 @@
 var gulp = require("gulp");
 var eslint = require("gulp-eslint");
 var jscs = require("gulp-jscs");
+var connect = require("gulp-connect");
 
 // ----------------------------------------------------------------------------
 // EsLint
@@ -56,8 +57,20 @@ gulp.task("chk", function () {
 });
 
 // ----------------------------------------------------------------------------
+// Servers
+// ----------------------------------------------------------------------------
+// Static server.
+// Test page: http://127.0.0.1:4321/test/test.html
+gulp.task("server", function () {
+  connect.server({
+    root: __dirname,
+    port: 4321
+  });
+});
+
+// ----------------------------------------------------------------------------
 // Aggregations
 // ----------------------------------------------------------------------------
 gulp.task("check", ["chk", "eslint", "jscs"]);
 gulp.task("check:ci", ["chk", "eslint", "jscs"]);
-gulp.task("default", ["check"]);
+gulp.task("default", ["check", "server"]);
