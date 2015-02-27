@@ -10,6 +10,10 @@
     <script>
       var con = new SimpleConsole();
       con.log("Hello World!");
+      con.info("An information message!");
+      con.warn("A warning");
+      con.error("An error string");
+      con.error(new Error("An error object"));
     </script>
   </head>
   <body>
@@ -18,6 +22,10 @@
       <code>
         var con = new SimpleConsole();
         con.log("Hello World!");
+        con.info("An information message!");
+        con.warn("A warning");
+        con.error("An error string");
+        con.error(new Error("An error object"));
       </code>
     </pre>
   </body>
