@@ -43,8 +43,21 @@ gulp.task("jscs", function () {
 });
 
 // ----------------------------------------------------------------------------
+// Publication checks
+// ----------------------------------------------------------------------------
+gulp.task("chk", function () {
+  var bower = require("./bower.json");
+  var npm = require("./package.json");
+
+  if (bower.version !== npm.version) {
+    throw new Error(
+      "Bower (" + bower.version + ") / NPM  (" + npm.version + ") mismatch");
+  }
+});
+
+// ----------------------------------------------------------------------------
 // Aggregations
 // ----------------------------------------------------------------------------
-gulp.task("check", ["eslint", "jscs"]);
-gulp.task("check:ci", ["eslint", "jscs"]);
+gulp.task("check", ["chk", "eslint", "jscs"]);
+gulp.task("check:ci", ["chk", "eslint", "jscs"]);
 gulp.task("default", ["check"]);
