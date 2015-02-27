@@ -37,7 +37,7 @@ con.log("Hello world!");
 In your HTML:
 
 ```html
-<script src="PATH/TO/simple-console/dist/simple-console.umd.js"></script>
+<script src="PATH/TO/simple-console/simple-console.js"></script>
 ```
 
 In your JS:
