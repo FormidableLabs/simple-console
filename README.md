@@ -3,6 +3,9 @@ Simple Console
 
 Provides a simple, but useful cross-browser-compatible `console` logger.
 
+[![Build Status][trav_img]][trav_site]
+[![Coverage Status][cov_img]][cov_site]
+
 ### Features
 
 * Proxies to native functionality wherever possible.
