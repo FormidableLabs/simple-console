@@ -25,6 +25,13 @@ gulp.task("eslint:frontend", _eslint([
   envs: ["browser"]
 }));
 
+gulp.task("eslint:frontend:test", _eslint([
+  "test/**/*.js"
+], {
+  envs: ["browser", "mocha"],
+  globals: ["expect", "sinon"]
+}));
+
 gulp.task("eslint:backend", _eslint([
   "gulpfile.js",
   "webpack.*.js"
@@ -32,7 +39,10 @@ gulp.task("eslint:backend", _eslint([
   envs: ["node"]
 }));
 
-gulp.task("eslint", ["eslint:frontend", "eslint:backend"]);
+gulp.task("eslint", [
+  "eslint:frontend", "eslint:frontend:test",
+  "eslint:backend"
+]);
 
 // ----------------------------------------------------------------------------
 // JsCs
@@ -73,4 +83,5 @@ gulp.task("server", function () {
 // ----------------------------------------------------------------------------
 gulp.task("check", ["chk", "eslint", "jscs"]);
 gulp.task("check:ci", ["chk", "eslint", "jscs"]);
-gulp.task("default", ["check", "server"]);
+gulp.task("dev", ["server"]);
+gulp.task("default", ["check", "dev"]);

@@ -47,6 +47,26 @@ var con = new window.SimpleConsole();
 con.log("Hello world!");
 ```
 
+### Development
+
+Run checks, then development server:
+
+```
+$ gulp
+```
+
+Separated:
+
+```
+$ gulp check
+$ gulp dev
+```
+
+Navigations:
+
+* **Test Page**: http://127.0.0.1:4321/test/test.html
+* **Demo Page**: http://127.0.0.1:4321/examples/demo.html
+
 ### Also See
 
 Similar projects that can help with `console`:
