@@ -125,7 +125,8 @@ var KARMA_COV = {
   coverageReporter: {
     reporters: [
       { type: "json", file: "coverage.json" },
-      { type: "lcov" }
+      { type: "lcov" },
+      { type: "text-summary" }
     ],
     dir: "coverage/"
   }
@@ -175,7 +176,7 @@ gulp.task("test:frontend:ci", testFrontend({
   singleRun: true,
   browsers: ["PhantomJS", "Firefox"]
 }, KARMA_COV, {
-  reporters: ["spec", "coverage"]
+  reporters: ["spec", "coverage", "coveralls"]
 }));
 
 gulp.task("test:frontend:sauce", testFrontend({
