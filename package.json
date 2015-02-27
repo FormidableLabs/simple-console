@@ -5,7 +5,8 @@
   "main": "simple-console.js",
   "dependencies": {},
   "devDependencies": {
-    "gulp": "^3.8.11"
+    "gulp": "3.8.11",
+    "webpack": "^1.6.0"
   },
   "scripts": {},
   "repository": {
