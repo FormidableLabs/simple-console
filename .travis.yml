@@ -1,0 +1,17 @@
+language: node_js
+
+node_js:
+  - 0.10
+
+branches:
+  only:
+    - master
+
+before_install:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+
+script:
+  # - ./node_modules/.bin/gulp check:ci
+  # - npm run-script coverage
+  # - ./node_modules/.bin/gulp test:frontend:sauce

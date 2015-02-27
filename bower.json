@@ -1,0 +1,24 @@
+{
+  "name": "simple-console",
+  "version": "0.0.1",
+  "homepage": "https://github.com/FormidableLabs/simple-console",
+  "authors": [
+    "Ryan Roemer <ryan.roemer@formidablelabs.com>"
+  ],
+  "description": "A small, cross-browser-friendly console wrapper.",
+  "main": "simple-console.js",
+  "keywords": [
+    "console",
+    "polyfill"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "*.html",
+    "gulpfile.js",
+    "package.json",
+    "node_modules",
+    "bower_components",
+    "test"
+  ]
+}
