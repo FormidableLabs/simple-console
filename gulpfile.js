@@ -29,7 +29,7 @@ gulp.task("eslint:frontend:test", _eslint([
   "test/**/*.js"
 ], {
   envs: ["browser", "mocha"],
-  globals: ["expect", "sinon"]
+  globals: ["expect", "sinon", "SimpleConsole"]
 }));
 
 gulp.task("eslint:backend", _eslint([
