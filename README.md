@@ -17,7 +17,6 @@ Similar projects that can help with `console`:
 * [`console-polyfill`](https://github.com/paulmillr/console-polyfill)
 * [`console.log-wrapper`](https://github.com/patik/console.log-wrapper)
 
-### Licenses
-All code not otherwise specified is Copyright 2015 Formidable Labs, Inc.
+### License
+Copyright 2015 Formidable Labs, Inc.
 Released under the [MIT](./LICENSE.txt) License,
-

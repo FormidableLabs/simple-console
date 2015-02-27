@@ -42,5 +42,9 @@ gulp.task("jscs", function () {
     .pipe(jscs());
 });
 
+// ----------------------------------------------------------------------------
+// Aggregations
+// ----------------------------------------------------------------------------
 gulp.task("check", ["eslint", "jscs"]);
+gulp.task("check:ci", ["eslint", "jscs"]);
 gulp.task("default", ["check"]);
