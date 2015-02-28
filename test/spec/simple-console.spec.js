@@ -20,9 +20,9 @@ describe("simple-console", function () {
       con.warn("warn");
       con.warn.apply(con, ["warn apply"]);
       con.warn.call(con, "warn call");
-      con.error("warn");
-      con.error.apply(con, ["warn apply"]);
-      con.error.call(con, "warn call");
+      con.error("error");
+      con.error.apply(con, ["error apply"]);
+      con.error.call(con, "error call");
     });
   });
 
@@ -42,9 +42,9 @@ describe("simple-console", function () {
       con.warn("warn");
       con.warn.apply(con, ["warn apply"]);
       con.warn.call(con, "warn call");
-      con.error("warn");
-      con.error.apply(con, ["warn apply"]);
-      con.error.call(con, "warn call");
+      con.error("error");
+      con.error.apply(con, ["error apply"]);
+      con.error.call(con, "error call");
     });
   });
 });
