@@ -64,8 +64,6 @@ describe("simple-console", function () {
         con = new SimpleConsole();
       });
 
-      // Just do a lot of invocations and see if anything dies.
-      // This _will_ clog the output, so do them last...
       it("should invoke lots of functions and maybe log", function () {
         con.log("log");
         con.log.apply(con, ["log apply"]);
@@ -76,6 +74,30 @@ describe("simple-console", function () {
         con.error("error");
         con.error.apply(con, ["error apply"]);
         con.error.call(con, "error call");
+      });
+    });
+
+    describe("monkey patch real console", function () {
+      var _oldConsole = window.console;
+
+      beforeEach(function () {
+        window.console = new SimpleConsole();
+      });
+
+      afterEach(function () {
+        window.console = _oldConsole;
+      });
+
+      it("should invoke lots of functions and maybe log", function () {
+        window.console.log("log");
+        window.console.log.apply(window.console, ["log apply"]);
+        window.console.log.call(window.console, "log call");
+        window.console.warn("warn");
+        window.console.warn.apply(window.console, ["warn apply"]);
+        window.console.warn.call(window.console, "warn call");
+        window.console.error("error");
+        window.console.error.apply(window.console, ["error apply"]);
+        window.console.error.call(window.console, "error call");
       });
     });
   });
