@@ -29,29 +29,33 @@
 
   /**
    * Console abstraction.
+   *
+   * @param {Object} target console object to _patch_ or `null` for new object.
    */
-  var SimpleConsole = function () {
-    var self = this;
-    var con = this._getConsole();
+  var SimpleConsole = function (target) {
+    var con = target || this._getConsole();
     var bind = this._getBind();
     var noConsole = !con;
-    con = con || {};
     var i;
+
+    // Get targets
+    target = target || this;
+    con = con || {};
 
     // Patch properties, methods.
     for (i = 0; i < props.length; i++) {
-      this[props[i]] = con[props[i]] || EMPTY_OBJ;
+      target[props[i]] = con[props[i]] || EMPTY_OBJ;
     }
 
     // Enable "apply" and "bind" on methods by converting to real function.
     // See: http://patik.com/blog/complete-cross-browser-console-log/
     for (i = 0; i < meths.length; i++) {
-      (function (meth) {
-        if (noConsole || !con[meth]) {
+      (function (meth, methFn) {
+        if (noConsole || !methFn) {
           // No console or method: Noop it.
-          self[meth] = NOOP;
+          target[meth] = NOOP;
 
-        } else if (isArray(con[meth])) {
+        } else if (isArray(methFn)) {
           // Straight assign any array objects.
           // *Note*: Could do `.slice(0);` to clone.
           //
@@ -59,29 +63,21 @@
           // Issue is `console.profiles`, which is an array.
           // See: https://github.com/FormidableLabs/simple-console/issues/3
           // See: https://saucelabs.com/tests/9a89e381c91c4e43b25ab8ee16a514e1
-          self[meth] = con[meth];
-
-        // } else if (con[meth].bind) {
-        //   // Favor direct bind first.
-        //   //
-        //   // Fixes Safari on Mac OS X 10.9 on Sauce.
-        //   // Issue is something to do with binding native functionality.
-        //   // See: https://github.com/FormidableLabs/simple-console/issues/4
-        //   self[meth] = con[meth].bind(con);
+          target[meth] = methFn;
 
         } else if (bind) {
           // IE9 and most others: Bind to our create real function.
           // Should work if `console.FOO` is `function` or `object`.
-          self[meth] = bind.call(con[meth], con);
+          target[meth] = bind.call(methFn, con);
 
         } else {
           // IE8: No bind, so even more tortured.
-          self[meth] = function () {
-            Function.prototype.call.call(con[meth], con,
+          target[meth] = function () {
+            Function.prototype.call.call(methFn, con,
               Array.prototype.slice.call(arguments));
           };
         }
-      })(meths[i]);
+      })(meths[i], con[meths[i]]);
     }
   };
 
@@ -89,6 +85,7 @@
    * Accessor to console object. (Cached).
    *
    * @returns {Object} the console object or `null` if unavailable.
+   * @api private
    */
   SimpleConsole.prototype._getConsole = function () {
     if (typeof _console !== "undefined") { return _console; }
@@ -100,11 +97,28 @@
    * Accessor to bind object. (Cached).
    *
    * @returns {Object} the console object or `null` if unavailable.
+   * @api private
    */
   SimpleConsole.prototype._getBind = function () {
     if (typeof _bind !== "undefined") { return _bind; }
     _bind = Function.prototype.bind || null;
     return _bind;
+  };
+
+  /**
+   * Patch console object.
+   *
+   * @param {Object}  con console object
+   * @returns {Object}    patched console object
+   * @api private
+   */
+  SimpleConsole.patch = function (con) {
+    con = con || window.console || {};
+
+    // Create simple console object and proxy methods.
+    new SimpleConsole(con);
+
+    return con;
   };
 
   // UMD wrapper: Borrowed from webpack version.

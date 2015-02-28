@@ -82,39 +82,52 @@ var SAUCE_ENVS = {
   //   base: "SauceLabs",
   //   browserName: "firefox"
   // },
-  // sl_chrome: {
-  //   base: "SauceLabs",
-  //   browserName: "chrome"
-  // },
-  sl_safari: {
+  sl_chrome: {
+    base: "SauceLabs",
+    browserName: "chrome"
+  },
+  sl_safari_6_8: {
     base: "SauceLabs",
     browserName: "safari",
-    platform: "OS X 10.9"
-  // },
-  // sl_ie_8: {
-  //   base: "SauceLabs",
-  //   browserName: "internet explorer",
-  //   platform: "Windows XP",
-  //   version: "8"
-  // },
-  // sl_ie_9: {
-  //   base: "SauceLabs",
-  //   browserName: "internet explorer",
-  //   platform: "Windows 7",
-  //   version: "9"
-  // },
-  // sl_ie_10: {
-  //   base: "SauceLabs",
-  //   browserName: "internet explorer",
-  //   platform: "Windows 7",
-  //   version: "10"
-  // },
-  // sl_ie_11: {
-  //   base: "SauceLabs",
-  //   browserName: "internet explorer",
-  //   platform: "Windows 7",
-  //   version: "11"
-  // }
+    platform: "OS X 10.8",
+    version: "6.0"
+  },
+  sl_safari_7_9: {
+    base: "SauceLabs",
+    browserName: "safari",
+    platform: "OS X 10.9",
+    version: "7.0"
+  },
+  sl_safari_8_10: {
+    base: "SauceLabs",
+    browserName: "safari",
+    platform: "OS X 10.10",
+    version: "8.0"
+  },
+  sl_ie_8: {
+    base: "SauceLabs",
+    browserName: "internet explorer",
+    platform: "Windows XP",
+    version: "8"
+  },
+  sl_ie_9: {
+    base: "SauceLabs",
+    browserName: "internet explorer",
+    platform: "Windows 7",
+    version: "9"
+  },
+  sl_ie_10: {
+    base: "SauceLabs",
+    browserName: "internet explorer",
+    platform: "Windows 7",
+    version: "10"
+  },
+  sl_ie_11: {
+    base: "SauceLabs",
+    browserName: "internet explorer",
+    platform: "Windows 7",
+    version: "11"
+  }
   /*eslint-enable camelcase*/
 };
 
@@ -221,7 +234,9 @@ gulp.task("server", function () {
 // ----------------------------------------------------------------------------
 // Aggregations
 // ----------------------------------------------------------------------------
-gulp.task("check", ["chk", "eslint", "jscs", "test:frontend:dev"]);
-gulp.task("check:ci", ["chk", "eslint", "jscs", "test:frontend:ci"]);
+gulp.task("check-base", ["chk", "eslint", "jscs"]);
+gulp.task("check", ["check-base", "test:frontend:dev"]);
+gulp.task("check:ci", ["check-base", "test:frontend:ci"]);
+gulp.task("check:all", ["check-base", "test:frontend:all"]);
 gulp.task("dev", ["server"]);
 gulp.task("default", ["check", "dev"]);

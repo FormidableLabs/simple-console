@@ -18,7 +18,8 @@ Provides a simple, but useful cross-browser-compatible `console` logger.
 ### Usage
 
 Import the `SimpleConsole` class into your code (via AMD, CommonJS, etc) and
-use as a drop-in replacement for `console.OPERATION`.
+use as a drop-in replacement for `console.OPERATION`. Creating a new object
+does _not_ effect the existing `window.console` object.
 
 #### AMD
 
@@ -54,14 +55,21 @@ con.log("Hello world!");
 
 ### Polyfill
 
-If you are looking to **polyfill** `console`, you best bet is probably to:
+If you are looking to **polyfill** `console`, then you can:
 
 ```js
-window.console = new SimpleConsole();
+// Option One: Implicit
+window.console = SimpleConsole.patch();
+
+// Option Two: Explicit
+window.console = SimpleConsole.patch(window.console);
 ```
 
-This is not the ideal world in that this will replace even some functionality
-that behaves as expected in addition to filling / patching the missing
+This **will** mutate the `window.console` object in ways that are not easily
+undone, so consider this a "one way" patch.
+
+Also note that the polyfill will replace even some functionality
+that already behaves as expected in addition to filling / patching the missing
 behavior parts. However, since the internals of what to fill and _how_ --
 especially in a way that is `.bind` and `.apply` friendly -- is most simply
 taken care of globally for all `console` properties.

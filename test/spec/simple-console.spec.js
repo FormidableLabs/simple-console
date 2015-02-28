@@ -1,6 +1,8 @@
 describe("simple-console", function () {
   describe("no logger", function () {
-    var conStub,
+    // Track if bind is not available for certain platforms.
+    var noBind = !Function.prototype.bind,
+      conStub,
       con;
 
     beforeEach(function () {
@@ -23,6 +25,20 @@ describe("simple-console", function () {
       con.error("error");
       con.error.apply(con, ["error apply"]);
       con.error.call(con, "error call");
+    });
+
+
+    it("should handle swap between warn or log", function () {
+      // Short-circuit: need bind.
+      if (noBind) { return; }
+
+      // This is a very common use case for logging.
+      // See, e.g.: https://github.com/FormidableLabs/biff/issues/3
+      var warn = (con.warn || con.log).bind(console);
+
+      warn("warn");
+      warn.apply(con, ["warn apply"]);
+      warn.call(con, "warn call");
     });
   });
 
@@ -77,15 +93,35 @@ describe("simple-console", function () {
       });
     });
 
+    // **NOTE**: This test should come last because we can't really _undo_
+    // all the stuff we're doing...
     describe("monkey patch real console", function () {
-      var _oldConsole = window.console;
 
       beforeEach(function () {
-        window.console = new SimpleConsole();
+        // Implicit: `window.console`
+        window.console = SimpleConsole.patch();
       });
 
-      afterEach(function () {
-        window.console = _oldConsole;
+      it("should invoke lots of functions and maybe log", function () {
+        window.console.log("log");
+        window.console.log.apply(window.console, ["log apply"]);
+        window.console.log.call(window.console, "log call");
+        window.console.warn("warn");
+        window.console.warn.apply(window.console, ["warn apply"]);
+        window.console.warn.call(window.console, "warn call");
+        window.console.error("error");
+        window.console.error.apply(window.console, ["error apply"]);
+        window.console.error.call(window.console, "error call");
+      });
+    });
+
+    // **NOTE**: `console` is pretty much unusable past this point because
+    // we've now overwritten it with something that noop's all operations.
+    describe("monkey patch with empty object", function () {
+
+      beforeEach(function () {
+        // Explicit: Empty object.
+        window.console = SimpleConsole.patch({});
       });
 
       it("should invoke lots of functions and maybe log", function () {
