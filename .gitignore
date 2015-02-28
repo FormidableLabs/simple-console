@@ -12,6 +12,3 @@ npm-debug\.log
 
 local
 coverage
-
-# Temporary - exclude dist
-dist

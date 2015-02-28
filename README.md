@@ -43,6 +43,10 @@ con.log("Hello world!");
 In your HTML:
 
 ```html
+<!-- Option One: Minified -->
+<script src="PATH/TO/simple-console/dist/simple-console.min.js"></script>
+
+<!-- Option Two: Raw source -->
 <script src="PATH/TO/simple-console/simple-console.js"></script>
 ```
 
