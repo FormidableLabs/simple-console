@@ -50,18 +50,30 @@
         if (noConsole || !con[meth]) {
           // No console or method: Noop it.
           self[meth] = NOOP;
+
         } else if (isArray(con[meth])) {
           // Straight assign any array objects.
           // *Note*: Could do `.slice(0);` to clone.
           //
           // Fixes Safari on Mac OS X 10.9 on Sauce.
           // Issue is `console.profiles`, which is an array.
+          // See: https://github.com/FormidableLabs/simple-console/issues/3
           // See: https://saucelabs.com/tests/9a89e381c91c4e43b25ab8ee16a514e1
           self[meth] = con[meth];
+
+        // } else if (con[meth].bind) {
+        //   // Favor direct bind first.
+        //   //
+        //   // Fixes Safari on Mac OS X 10.9 on Sauce.
+        //   // Issue is something to do with binding native functionality.
+        //   // See: https://github.com/FormidableLabs/simple-console/issues/4
+        //   self[meth] = con[meth].bind(con);
+
         } else if (bind) {
           // IE9 and most others: Bind to our create real function.
           // Should work if `console.FOO` is `function` or `object`.
           self[meth] = bind.call(con[meth], con);
+
         } else {
           // IE8: No bind, so even more tortured.
           self[meth] = function () {
