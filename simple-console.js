@@ -44,10 +44,15 @@
         if (noConsole || !con[meth]) {
           // No console or method: Noop it.
           self[meth] = NOOP;
+        } else if (con[meth].bind) {
+          // Try to use built-in bind first, where possible.
+          // (Hopefully) fixes Safari on Mac OS X 10.9 on Sauce.
+          // See: https://saucelabs.com/tests/9a89e381c91c4e43b25ab8ee16a514e1
+          self[meth] = con[meth].bind(con);
         } else if (bind) {
           // IE9 and most others: Bind to our create real function.
           // Should work if `console.FOO` is `function` or `object`.
-          self[meth] = bind.call(con[meth], con);
+          self[meth] = bind(con[meth], con);
         } else {
           // IE8: No bind, so even more tortured.
           self[meth] = function () {
