@@ -6,6 +6,7 @@
 (function (root) {
   // Memoizations.
   var _console;
+  var _bind;
 
   // Patches
   var EMPTY_OBJ = {};
@@ -26,6 +27,7 @@
   var SimpleConsole = function () {
     var self = this;
     var con = this._getConsole();
+    var bind = this._getBind();
     var noConsole = !con;
     con = con || {};
     var i;
@@ -42,10 +44,10 @@
         if (noConsole || !con[meth]) {
           // No console or method: Noop it.
           self[meth] = NOOP;
-        } else if (Function.prototype.bind) {
+        } else if (bind) {
           // IE9 and most others: Bind to our create real function.
           // Should work if `console.FOO` is `function` or `object`.
-          self[meth] = Function.prototype.bind.call(con[meth], con);
+          self[meth] = bind.call(con[meth], con);
         } else {
           // IE8: No bind, so even more tortured.
           self[meth] = function () {
@@ -66,6 +68,17 @@
     if (typeof _console !== "undefined") { return _console; }
     _console = window.console || null;
     return _console;
+  };
+
+  /**
+   * Accessor to bind object. (Cached).
+   *
+   * @returns {Object} the console object or `null` if unavailable.
+   */
+  SimpleConsole.prototype._getBind = function () {
+    if (typeof _bind !== "undefined") { return _bind; }
+    _bind = Function.prototype.bind || null;
+    return _bind;
   };
 
   // UMD wrapper: Borrowed from webpack version.
