@@ -13,3 +13,9 @@ before_install:
 
 script:
   - ./node_modules/.bin/gulp check:ci
+  - ./node_modules/.bin/gulp test:frontend:sauce
+
+env:
+  global:
+  - secure: TzWoAgpAtMXfO5SChT0VayvxPhGK3KnxYjmpxp+rsC0llrQ3dLjdr3I4nzW8zoKdcV33jygPMsBHUd0d/QEYx+criYfS/tWHWZlsmIxnhogAYs5ow0F56q3CD+TuF09KPd/YFiO2Cn8KTHysyRyHOC/O1ISNZFZ1ppMMXn15qBI=
+  - secure: OuZQMQcAKX56eV5ALH1xfxKxXRHvjmcCJ3LK4QvikgHW1slKEDW1DLqL5t4CNEaMytRlk/EtvYEe82j8Z4vqDlAL2A8WpBuW3e0E6ZnaNUZvU7/hkQJWsbeWMsTjfq+oyatnxAjY96QU8PGrfoq2K1JwhLzhJ76yep4+ZFqXwM4=
