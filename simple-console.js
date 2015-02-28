@@ -69,6 +69,7 @@
   };
 
   // UMD wrapper: Borrowed from webpack version.
+  /* istanbul ignore next */
   function umd() {
     if (typeof exports === "object" && typeof module === "object") {
       // CommonJS
