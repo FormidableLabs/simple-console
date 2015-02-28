@@ -6,6 +6,8 @@ Provides a simple, but useful cross-browser-compatible `console` logger.
 [![Build Status][trav_img]][trav_site]
 [![Coverage Status][cov_img]][cov_site]
 
+[![Sauce Test Status][sauce_img]][sauce_site]
+
 ### Features
 
 * Proxies to native functionality wherever possible.
@@ -84,3 +86,6 @@ Released under the [MIT](./LICENSE.txt) License,
 [cov]: https://coveralls.io
 [cov_img]: https://img.shields.io/coveralls/FormidableLabs/simple-console.svg
 [cov_site]: https://coveralls.io/r/FormidableLabs/simple-console
+[sauce]: https://saucelabs.com
+[sauce_img]: https://saucelabs.com/browser-matrix/simple-console.svg
+[sauce_site]: https://saucelabs.com/u/simple-console
