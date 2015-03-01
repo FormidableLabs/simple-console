@@ -57,6 +57,28 @@ var con = new window.SimpleConsole();
 con.log("Hello world!");
 ```
 
+### Noop Logger
+
+There are some cases where you will want to conditionally silence the logger.
+You can do this by passing `null` as the `target` parameter to the logger like:
+
+```js
+var con = new SimpleConsole(null);  // `{}` also works.
+con.log("Hello world!");            // => Should _not_ output anything.
+```
+
+This is usually useful in a case where you build different capabilities based
+on some external information, for example, React-style, this could be
+something like:
+
+```js
+var con = "production" !== process.env.NODE_ENV ?
+  new SimpleConsole() :     // Actual, working logger.
+  new SimpleConsole(null);  // Noop (sinkhole) logger.
+
+con.log("Hello world!"); // => Should _not_ output anything in `production`.
+```
+
 ### Polyfill
 
 If you are looking to **polyfill** `console`, then you can:
