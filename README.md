@@ -72,9 +72,9 @@ on some external information, for example, React-style, this could be
 something like:
 
 ```js
-var con = "production" !== process.env.NODE_ENV ?
-  new SimpleConsole() :     // Actual, working logger.
-  new SimpleConsole(null);  // Noop (sinkhole) logger.
+var con = "production" === process.env.NODE_ENV ?
+  new SimpleConsole(null):  // Noop (sinkhole) logger.
+  new SimpleConsole();      // Actual, working logger.
 
 con.log("Hello world!"); // => Should _not_ output anything in `production`.
 ```

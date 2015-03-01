@@ -1,6 +1,11 @@
 History
 =======
 
+## 0.0.3
+
+* Add props/method to `this` as well as target context.
+* Add explicit documentation for sinkhole logger and use cases.
+
 ## 0.0.2
 
 * Should have full functionality as instance logger / global polyfill.
