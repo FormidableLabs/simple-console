@@ -120,6 +120,13 @@ Navigations:
 * **Test Page**: http://127.0.0.1:4321/test/test.html
 * **Demo Page**: http://127.0.0.1:4321/examples/demo.html
 
+Release process:
+
+* Bump versions in `package.json`, `bower.json`
+* Run `npm run-script dist`
+* Edit `HISTORY.md`
+* Run `gulp check:all`
+
 ### Also See
 
 Similar projects that can help with `console`:
