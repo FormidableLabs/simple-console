@@ -27,7 +27,6 @@ describe("simple-console", function () {
       con.error.call(con, "error call");
     });
 
-
     it("should handle swap between warn or log", function () {
       // Short-circuit: need bind.
       if (noBind) { return; }
@@ -39,6 +38,36 @@ describe("simple-console", function () {
       warn("warn");
       warn.apply(con, ["warn apply"]);
       warn.call(con, "warn call");
+    });
+  });
+
+  describe("sinkhole logger", function () {
+    it("should sinkhole with null", function () {
+      var con = new SimpleConsole(null);
+
+      con.log("log");
+      con.log.apply(con, ["log apply"]);
+      con.log.call(con, "log call");
+      con.warn("warn");
+      con.warn.apply(con, ["warn apply"]);
+      con.warn.call(con, "warn call");
+      con.error("error");
+      con.error.apply(con, ["error apply"]);
+      con.error.call(con, "error call");
+    });
+
+    it("should sinkhole with empty object", function () {
+      var con = new SimpleConsole({});
+
+      con.log("log");
+      con.log.apply(con, ["log apply"]);
+      con.log.call(con, "log call");
+      con.warn("warn");
+      con.warn.apply(con, ["warn apply"]);
+      con.warn.call(con, "warn call");
+      con.error("error");
+      con.error.apply(con, ["error apply"]);
+      con.error.call(con, "error call");
     });
   });
 
