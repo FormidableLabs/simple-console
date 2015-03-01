@@ -15,6 +15,20 @@ Provides a simple, but useful cross-browser-compatible `console` logger.
 * Buildable from straight CommonJS source.
 * Available as bundled distributions as well.
 
+### Installation
+
+Install via [npm](https://www.npmjs.com/package/simple-console):
+
+```
+$ npm install simple-console
+```
+
+or [bower](http://bower.io/search/?q=simple-console):
+
+```
+$ bower install simple-console
+```
+
 ### Usage
 
 Import the `SimpleConsole` class into your code (via AMD, CommonJS, etc) and
