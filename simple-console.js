@@ -116,7 +116,9 @@
     con = con || window.console || {};
 
     // Create simple console object and proxy methods.
+    /*eslint-disable no-new*/
     new SimpleConsole(con);
+    /*eslint-enable no-new*/
 
     return con;
   };
@@ -124,6 +126,7 @@
   // UMD wrapper: Borrowed from webpack version.
   /* istanbul ignore next */
   function umd() {
+    /*global exports define*/
     if (typeof exports === "object" && typeof module === "object") {
       // CommonJS
       module.exports = SimpleConsole;

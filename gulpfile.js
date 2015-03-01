@@ -22,7 +22,7 @@ var _eslint = function (files, cfg) {
 };
 
 gulp.task("eslint:frontend", _eslint([
-  "console-stream.js"
+  "simple-console.js"
 ], {
   envs: ["browser"]
 }));
