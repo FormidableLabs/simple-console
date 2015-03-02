@@ -29,7 +29,8 @@
     "uglify-js": "2.4.16"
   },
   "scripts": {
-    "dist": "uglifyjs simple-console.js --stats --compress --mangle --output=dist/simple-console.min.js"
+    "dist": "uglifyjs simple-console.js --stats --compress --mangle --output=dist/simple-console.min.js",
+    "everything": "npm run-script dist && gulp check:all"
   },
   "repository": {
     "type": "git",

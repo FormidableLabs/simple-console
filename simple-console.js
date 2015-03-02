@@ -26,35 +26,44 @@
   /**
    * Console abstraction.
    *
-   * The abstract patches the `target` if passed _and_ the `this` context of
-   * the object.
+   * Provides a drop-in replacement for `console` with a few extras.
    *
-   * @param {Object} target console object to _patch_ or `null` for new object.
+   * @param {Object} opts       options object
+   * @param {Object} opts.patch patch underlying `console`? (default: `true`)
+   * @param {Object} opts.noop  have all methods be NOOP?   (default: `true`)
    */
-  var SimpleConsole = function (target) {
-    var con = typeof target !== "undefined" ? target : this._getConsole();
-    var bind = this._getBind();
-    var noConsole = !con;
+  var SimpleConsole = function (opts) {
+    var self = this;
     var i;
 
-    // Get targets.
-    // Always patch `this`. Maybe patch `target` if passed.
-    var self = this;
-    target = target || self;
+    // Starting state.
+    var bind = self._getBind();
+    var con = self._getConsole();
+    var noConsole = !con; // Stash if console unavailable.
+
+    // Protect variables.
+    opts = opts || {};
     con = con || {};
+
+    // Target: Add properties to console if patching.
+    var target = opts.patch ? con : {};
 
     // Patch properties, methods.
     for (i = 0; i < props.length; i++) {
-      self[props[i]] = target[props[i]] = con[props[i]] || EMPTY_OBJ;
+      // *Note*: Could consider _copying_ values.
+      self[props[i]] = target[props[i]] = opts.noop ?
+        EMPTY_OBJ :
+        con[props[i]] || EMPTY_OBJ;
     }
 
     // Enable "apply" and "bind" on methods by converting to real function.
     // See: http://patik.com/blog/complete-cross-browser-console-log/
     for (i = 0; i < meths.length; i++) {
-      (function (meth, methFn) {
-        if (noConsole || !methFn) {
-          // No console or method: Noop it.
-          self[meth] = target[meth] = NOOP;
+      // Set context _and_ the target.
+      self[meths[i]] = target[meths[i]] = (function (methFn) {
+        if (opts.noop || noConsole || !methFn) {
+          // Noop cases.
+          return NOOP;
 
         } else if (isArray(methFn)) {
           // Straight assign any array objects.
@@ -64,21 +73,20 @@
           // Issue is `console.profiles`, which is an array.
           // See: https://github.com/FormidableLabs/simple-console/issues/3
           // See: https://saucelabs.com/tests/9a89e381c91c4e43b25ab8ee16a514e1
-          self[meth] = target[meth] = methFn;
+          return methFn;
 
         } else if (bind) {
           // IE9 and most others: Bind to our create real function.
           // Should work if `console.FOO` is `function` or `object`.
-          self[meth] = target[meth] = bind.call(methFn, con);
-
-        } else {
-          // IE8: No bind, so even more tortured.
-          self[meth] = target[meth] = function () {
-            Function.prototype.call.call(methFn, con,
-              Array.prototype.slice.call(arguments));
-          };
+          return bind.call(methFn, con);
         }
-      })(meths[i], con[meths[i]]);
+
+        // IE8: No bind, so even more tortured.
+        return function () {
+          Function.prototype.call.call(methFn, con,
+            Array.prototype.slice.call(arguments));
+        };
+      })(con[meths[i]]);
     }
   };
 
@@ -106,24 +114,6 @@
     if (typeof _bind !== "undefined") { return _bind; }
     _bind = Function.prototype.bind || null;
     return _bind;
-  };
-
-  /**
-   * Patch console object.
-   *
-   * @param {Object}  con console object
-   * @returns {Object}    patched console object
-   * @api private
-   */
-  SimpleConsole.patch = function (con) {
-    con = con || window.console || {};
-
-    // Create simple console object and proxy methods.
-    /*eslint-disable no-new*/
-    new SimpleConsole(con);
-    /*eslint-enable no-new*/
-
-    return con;
   };
 
   // UMD wrapper: Borrowed from webpack version.

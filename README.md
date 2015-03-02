@@ -13,7 +13,7 @@ Provides a simple, but useful cross-browser-compatible `console` logger.
 * Proxies to native functionality wherever possible.
 * Enables `.apply` and `.bind` usage with `console.OPERATION`.
 * Buildable from straight CommonJS source.
-* Available as bundled distributions as well.
+* Available as minified distributions as well.
 
 ### Installation
 
@@ -77,8 +77,8 @@ There are some cases where you will want to conditionally silence the logger.
 You can do this by passing `null` as the `target` parameter to the logger like:
 
 ```js
-var con = new SimpleConsole(null);  // `{}` also works.
-con.log("Hello world!");            // => Should _not_ output anything.
+var con = new SimpleConsole({ noop: true });
+con.log("Hello world!"); // => Should _not_ output anything.
 ```
 
 This is usually useful in a case where you build different capabilities based
@@ -86,9 +86,9 @@ on some external information, for example, React-style, this could be
 something like:
 
 ```js
-var con = "production" === process.env.NODE_ENV ?
-  new SimpleConsole(null):  // Noop (sinkhole) logger.
-  new SimpleConsole();      // Actual, working logger.
+var con = new SimpleConsole({
+  noop: process.env.NODE_ENV === "production"
+});
 
 con.log("Hello world!"); // => Should _not_ output anything in `production`.
 ```
@@ -98,21 +98,24 @@ con.log("Hello world!"); // => Should _not_ output anything in `production`.
 If you are looking to **polyfill** `console`, then you can:
 
 ```js
-// Option One: Implicit
-window.console = SimpleConsole.patch();
-
-// Option Two: Explicit
-window.console = SimpleConsole.patch(window.console);
+window.console = new SimpleConsole({ patch: true });
 ```
 
 This **will** mutate the `window.console` object in ways that are not easily
-undone, so consider this a "one way" patch.
+undone, so consider this a "one way" patch. You can even go further and
+patch _and_ noop the logger with:
 
-Also note that the polyfill will replace even some functionality
-that already behaves as expected in addition to filling / patching the missing
-behavior parts. However, since the internals of what to fill and _how_ --
-especially in a way that is `.bind` and `.apply` friendly -- is most simply
-taken care of globally for all `console` properties.
+```js
+window.console = new SimpleConsole({ patch: true, noop: true });
+```
+
+which ensures that _nothing_ logs anything.
+
+**Note**: In addition to filling/patching missing behavior, the polyfill will
+replace behavior that already _exists_ and _works_. This is presently due to
+complexities likely normalizing and ensuring things like `.bind`, `.apply`
+and `.call` work on all log methods.
+
 
 ### Development
 
@@ -150,7 +153,7 @@ Similar projects that can help with `console`:
 
 ### License
 Copyright 2015 Formidable Labs, Inc.
-Released under the [MIT](./LICENSE.txt) License,
+Released under the [MIT](LICENSE.txt) License,
 
 [trav]: https://travis-ci.org/
 [trav_img]: https://api.travis-ci.org/FormidableLabs/simple-console.svg

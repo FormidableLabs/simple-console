@@ -1,5 +1,5 @@
 describe("simple-console", function () {
-  describe("no logger", function () {
+  describe("no real console logger", function () {
     // Track if bind is not available for certain platforms.
     var noBind = !Function.prototype.bind,
       conStub,
@@ -41,23 +41,11 @@ describe("simple-console", function () {
     });
   });
 
-  describe("sinkhole logger", function () {
-    it("should sinkhole with null", function () {
-      var con = new SimpleConsole(null);
-
-      con.log("log");
-      con.log.apply(con, ["log apply"]);
-      con.log.call(con, "log call");
-      con.warn("warn");
-      con.warn.apply(con, ["warn apply"]);
-      con.warn.call(con, "warn call");
-      con.error("error");
-      con.error.apply(con, ["error apply"]);
-      con.error.call(con, "error call");
-    });
-
-    it("should sinkhole with empty object", function () {
-      var con = new SimpleConsole({});
+  describe("noop logger", function () {
+    it("should create a noop logger", function () {
+      var con = new SimpleConsole({
+        noop: true
+      });
 
       con.log("log");
       con.log.apply(con, ["log apply"]);
@@ -127,8 +115,9 @@ describe("simple-console", function () {
     describe("monkey patch real console", function () {
 
       beforeEach(function () {
-        // Implicit: `window.console`
-        window.console = SimpleConsole.patch();
+        window.console = new SimpleConsole({
+          patch: true
+        });
       });
 
       it("should invoke lots of functions and maybe log", function () {
@@ -146,11 +135,13 @@ describe("simple-console", function () {
 
     // **NOTE**: `console` is pretty much unusable past this point because
     // we've now overwritten it with something that noop's all operations.
-    describe("monkey patch with empty object", function () {
+    describe("monkey patch and noop console", function () {
 
       beforeEach(function () {
-        // Explicit: Empty object.
-        window.console = SimpleConsole.patch({});
+        window.console = new SimpleConsole({
+          patch: true,
+          noop: true
+        });
       });
 
       it("should invoke lots of functions and maybe log", function () {
