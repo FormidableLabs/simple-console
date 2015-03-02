@@ -4,10 +4,6 @@
  * A small, cross-browser-friendly `console` wrapper.
  */
 (function (root) {
-  // Memoizations.
-  var _console;
-  var _bind;
-
   // Patches
   var EMPTY_OBJ = {};
   var NOOP = function () {};
@@ -92,6 +88,7 @@
    * @returns {Object} the console object or `null` if unavailable.
    * @api private
    */
+  var _console;
   SimpleConsole.prototype._getConsole = function () {
     if (typeof _console !== "undefined") { return _console; }
     _console = window.console || null;
@@ -104,6 +101,7 @@
    * @returns {Object} the console object or `null` if unavailable.
    * @api private
    */
+  var _bind;
   SimpleConsole.prototype._getBind = function () {
     if (typeof _bind !== "undefined") { return _bind; }
     _bind = Function.prototype.bind || null;
@@ -130,23 +128,18 @@
 
   // UMD wrapper: Borrowed from webpack version.
   /* istanbul ignore next */
-  function umd() {
-    /*global exports define*/
-    if (typeof exports === "object" && typeof module === "object") {
-      // CommonJS
-      module.exports = SimpleConsole;
-    } else if (typeof define === "function" && define.amd) {
-      // AMD
-      define(function () {
-        return SimpleConsole;
-      });
-    } else {
-      // VanillaJS / Old exports
-      var mod = typeof exports === "object" ? exports : root;
-      mod.SimpleConsole = SimpleConsole;
-    }
+  /*global exports define*/
+  if (typeof exports === "object" && typeof module === "object") {
+    // CommonJS
+    module.exports = SimpleConsole;
+  } else if (typeof define === "function" && define.amd) {
+    // AMD
+    define(function () {
+      return SimpleConsole;
+    });
+  } else {
+    // VanillaJS / Old exports
+    var mod = typeof exports === "object" ? exports : root;
+    mod.SimpleConsole = SimpleConsole;
   }
-
-  // Wrap.
-  umd(SimpleConsole);
 })(this);
