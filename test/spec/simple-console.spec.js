@@ -114,10 +114,12 @@ describe("simple-console", function () {
     // all the stuff we're doing...
     describe("monkey patch real console", function () {
 
-      beforeEach(function () {
-        window.console = new SimpleConsole({
+      before(function () {
+        /*eslint-disable no-new*/
+        new SimpleConsole({
           patch: true
         });
+        /*eslint-enable no-new*/
       });
 
       it("should invoke lots of functions and maybe log", function () {
@@ -137,11 +139,13 @@ describe("simple-console", function () {
     // we've now overwritten it with something that noop's all operations.
     describe("monkey patch and noop console", function () {
 
-      beforeEach(function () {
-        window.console = new SimpleConsole({
+      before(function () {
+        /*eslint-disable no-new*/
+        new SimpleConsole({
           patch: true,
           noop: true
         });
+        /*eslint-enable no-new*/
       });
 
       it("should invoke lots of functions and maybe log", function () {

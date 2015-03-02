@@ -46,7 +46,11 @@
     con = con || {};
 
     // Target: Add properties to console if patching.
-    var target = opts.patch ? con : {};
+    var target = {};
+    if (opts.patch) {
+      // Ensure that `window.console` is actually created, and set as target.
+      target = window.console = window.console || target;
+    }
 
     // Patch properties, methods.
     for (i = 0; i < props.length; i++) {

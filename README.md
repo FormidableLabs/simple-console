@@ -98,15 +98,17 @@ con.log("Hello world!"); // => Should _not_ output anything in `production`.
 If you are looking to **polyfill** `console`, then you can:
 
 ```js
-window.console = new SimpleConsole({ patch: true });
+new SimpleConsole({ patch: true });
 ```
 
 This **will** mutate the `window.console` object in ways that are not easily
-undone, so consider this a "one way" patch. You can even go further and
-patch _and_ noop the logger with:
+undone, so consider this a "one way" patch. Moreover, if `window.console`
+does not exist, it will create the object.
+
+You can even go further and patch _and_ noop the logger with:
 
 ```js
-window.console = new SimpleConsole({ patch: true, noop: true });
+new SimpleConsole({ patch: true, noop: true });
 ```
 
 which ensures that _nothing_ logs anything.
