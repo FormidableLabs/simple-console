@@ -1,6 +1,6 @@
 {
   "name": "simple-console",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "homepage": "https://github.com/FormidableLabs/simple-console",
   "authors": [
     "Ryan Roemer <ryan.roemer@formidablelabs.com>"
@@ -9,6 +9,7 @@
   "main": "simple-console.js",
   "keywords": [
     "console",
+    "log",
     "polyfill"
   ],
   "license": "MIT",

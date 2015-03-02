@@ -1,6 +1,6 @@
 {
   "name": "simple-console",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "A small, cross-browser-friendly console wrapper.",
   "main": "simple-console.js",
   "dependencies": {},
@@ -38,6 +38,7 @@
   },
   "keywords": [
     "console",
+    "log",
     "polyfill"
   ],
   "author": "Ryan Roemer <ryan.roemer@formidablelabs.com>",

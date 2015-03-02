@@ -1,6 +1,12 @@
 History
 =======
 
+## 0.1.0
+
+* Refactor `SimpleConsole` to take options object with explicit `patch` and
+  `noop` options.
+* Remove `SimpleConsole.patch()` and simplify polyfill / noop instructions.
+
 ## 0.0.4
 
 * Add missing `dist` file.
