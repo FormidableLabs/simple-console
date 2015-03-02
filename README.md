@@ -74,7 +74,7 @@ con.log("Hello world!");
 ### Noop Logger
 
 There are some cases where you will want to conditionally silence the logger.
-You can do this by passing `null` as the `target` parameter to the logger like:
+You can do this by passing setting the `noop` option:
 
 ```js
 var con = new SimpleConsole({ noop: true });
