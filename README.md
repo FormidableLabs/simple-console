@@ -148,7 +148,7 @@ Navigations:
 Release process:
 
 * Bump versions in `package.json`, `bower.json`
-* Run `npm run-script prepublish`
+* Run `npm run-script everything`
 * Edit `HISTORY.md`
 * Run `gulp check:all`
 
