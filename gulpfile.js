@@ -30,6 +30,7 @@ gulp.task("eslint:frontend", _eslint([
 }));
 
 gulp.task("eslint:frontend:test", _eslint([
+  "examples/**/*.js",
   "test/**/*.js"
 ], {
   envs: ["browser", "mocha"],

@@ -17,6 +17,9 @@ env:
   - secure: OuZQMQcAKX56eV5ALH1xfxKxXRHvjmcCJ3LK4QvikgHW1slKEDW1DLqL5t4CNEaMytRlk/EtvYEe82j8Z4vqDlAL2A8WpBuW3e0E6ZnaNUZvU7/hkQJWsbeWMsTjfq+oyatnxAjY96QU8PGrfoq2K1JwhLzhJ76yep4+ZFqXwM4=
 
 script:
+  # Check we can execute the basic node demo
+  - node examples/demo.js
+  # Tests
   - ./node_modules/.bin/gulp check:ci
   - ./node_modules/.bin/gulp test:frontend:sauce
   # Manually send coverage reports to coveralls.
