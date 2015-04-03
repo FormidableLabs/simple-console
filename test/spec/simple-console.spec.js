@@ -1,5 +1,7 @@
+var isNode = typeof window === "undefined";
+var root = isNode ? global : window;
+
 describe("simple-console", function () {
-  var root = typeof window === "undefined" ? global : window;
 
   describe("no real console logger", function () {
     // Track if bind is not available for certain platforms.
@@ -140,6 +142,8 @@ describe("simple-console", function () {
     // **NOTE**: `console` is pretty much unusable past this point because
     // we've now overwritten it with something that noop's all operations.
     describe("monkey patch and noop console", function () {
+      // Skip if Node so Gulp, etc. still usable...
+      if (isNode) { return; }
 
       before(function () {
         /*eslint-disable no-new*/

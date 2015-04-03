@@ -3,7 +3,11 @@
  * --------------
  * A small, cross-browser-friendly `console` wrapper.
  */
-(function (root) {
+(function () {
+  /*eslint-disable consistent-this*/
+  var root = this;
+  /*eslint-enable consistent-this*/
+
   // Patches
   var EMPTY_OBJ = {};
   var NOOP = function () {};
@@ -136,4 +140,4 @@
     var mod = typeof exports === "object" ? exports : root;
     mod.SimpleConsole = SimpleConsole;
   }
-})(this);
+})();

@@ -240,6 +240,9 @@ gulp.task("test:backend", function (done) {
           ui: "bdd",
           reporter: "spec"
         }))
+        .on("error", function (err) {
+          throw err;
+        })
         .pipe(istanbul.writeReports({
           dir: "./coverage/server",
           reportOpts: { dir: "./coverage/server" },
