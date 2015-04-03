@@ -1,7 +1,7 @@
 History
 =======
 
-## Current
+## 0.1.1
 
 * Make Node.js compatible.
 * Aggregate test coverage results for different browsers / server.
