@@ -219,24 +219,21 @@ gulp.task("test:frontend:all", testFrontend({
 // Test - Backend
 // ----------------------------------------------------------------------------
 gulp.task("test:backend", function (done) {
-  // Files.
-  var testFiles = ["test/**/*.js"];
-
-  // Node adapter.
-  global.sinon = require("sinon");
-  global.SimpleConsole = require("./simple-console");
-
   // First, cover files.
   gulp
-    .src(testFiles)
+    .src(["simple-console.js"])
     .pipe(istanbul({
       includeUntested: true
     }))
     .pipe(istanbul.hookRequire())
     .on("finish", function () {
+      // Node adapter.
+      global.sinon = require("sinon");
+      global.SimpleConsole = require("./simple-console");
+
       // Second, run the tests
       gulp
-        .src(testFiles, { read: false })
+        .src(["test/**/*.js"], { read: false })
         .pipe(mocha({
           ui: "bdd",
           reporter: "spec"
