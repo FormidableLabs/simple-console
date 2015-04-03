@@ -6,6 +6,8 @@ var gulp = require("gulp");
 var eslint = require("gulp-eslint");
 var jscs = require("gulp-jscs");
 var karma = require("gulp-karma");
+var mocha = require("gulp-mocha");
+var istanbul = require("gulp-istanbul");
 var connect = require("gulp-connect");
 
 // ----------------------------------------------------------------------------
@@ -28,10 +30,11 @@ gulp.task("eslint:frontend", _eslint([
 }));
 
 gulp.task("eslint:frontend:test", _eslint([
+  "examples/**/*.js",
   "test/**/*.js"
 ], {
   envs: ["browser", "mocha"],
-  globals: ["expect", "sinon", "SimpleConsole"]
+  globals: ["expect", "sinon", "SimpleConsole", "global"]
 }));
 
 gulp.task("eslint:backend", _eslint([
@@ -69,7 +72,7 @@ gulp.task("chk", function () {
 });
 
 // ----------------------------------------------------------------------------
-// Tests
+// Test - Frontend
 // ----------------------------------------------------------------------------
 // Use `node_modules` Phantom
 process.env.PHANTOMJS_BIN = "./node_modules/.bin/phantomjs";
@@ -135,22 +138,6 @@ var SAUCE_ENVS = {
 var SAUCE_BRANCH = process.env.TRAVIS_BRANCH || "local";
 var SAUCE_TAG = process.env.SAUCE_USERNAME + "@" + SAUCE_BRANCH;
 
-// Karma coverage.
-var KARMA_COV = {
-  reporters: ["spec", "coverage"],
-  preprocessors: {
-    "simple-console.js": ["coverage"]
-  },
-  coverageReporter: {
-    reporters: [
-      { type: "json", file: "coverage.json" },
-      { type: "lcov" },
-      { type: "text-summary" }
-    ],
-    dir: "coverage/"
-  }
-};
-
 // Test wrapper.
 var testFrontend = function () {
   var files = [
@@ -168,7 +155,18 @@ var testFrontend = function () {
   var opts = _.extend.apply(_, [{
     frameworks: ["mocha"],
     port: 9999,
-    reporters: ["spec"],
+    reporters: ["spec", "coverage"],
+    preprocessors: {
+      "simple-console.js": ["coverage"]
+    },
+    coverageReporter: {
+      reporters: [
+        { type: "json", file: "coverage.json" },
+        { type: "lcov" },
+        { type: "text-summary" }
+      ],
+      dir: "coverage/client"
+    },
     client: {
       captureConsole: true,
       mocha: {
@@ -190,18 +188,16 @@ var testFrontend = function () {
 gulp.task("test:frontend:dev", testFrontend({
   singleRun: true,
   browsers: ["PhantomJS"]
-}, KARMA_COV));
+}));
 
 gulp.task("test:frontend:ci", testFrontend({
   singleRun: true,
   browsers: ["PhantomJS", "Firefox"]
-}, KARMA_COV, {
-  reporters: ["spec", "coverage", "coveralls"]
 }));
 
 gulp.task("test:frontend:sauce", testFrontend({
   singleRun: true,
-  reporters: ["spec", "saucelabs"],
+  reporters: ["spec", "saucelabs", "coverage"],
   sauceLabs: {
     testName: "simple-console - Frontend Unit Tests",
     tags: [SAUCE_TAG],
@@ -220,6 +216,44 @@ gulp.task("test:frontend:all", testFrontend({
 }));
 
 // ----------------------------------------------------------------------------
+// Test - Backend
+// ----------------------------------------------------------------------------
+gulp.task("test:backend", function (done) {
+  // Files.
+  var testFiles = ["test/**/*.js"];
+
+  // Node adapter.
+  global.sinon = require("sinon");
+  global.SimpleConsole = require("./simple-console");
+
+  // First, cover files.
+  gulp
+    .src(testFiles)
+    .pipe(istanbul({
+      includeUntested: true
+    }))
+    .pipe(istanbul.hookRequire())
+    .on("finish", function () {
+      // Second, run the tests
+      gulp
+        .src(testFiles, { read: false })
+        .pipe(mocha({
+          ui: "bdd",
+          reporter: "spec"
+        }))
+        .on("error", function (err) {
+          throw err;
+        })
+        .pipe(istanbul.writeReports({
+          dir: "./coverage/server",
+          reportOpts: { dir: "./coverage/server" },
+          reporters: ["lcov", "json", "text-summary"]
+        }))
+        .on("end", done);
+    });
+});
+
+// ----------------------------------------------------------------------------
 // Servers
 // ----------------------------------------------------------------------------
 // Static server.
@@ -234,7 +268,8 @@ gulp.task("server", function () {
 // ----------------------------------------------------------------------------
 // Aggregations
 // ----------------------------------------------------------------------------
-gulp.task("check-base", ["chk", "eslint", "jscs"]);
+gulp.task("style", ["chk", "eslint", "jscs"]);
+gulp.task("check-base", ["style", "test:backend"]);
 gulp.task("check", ["check-base", "test:frontend:dev"]);
 gulp.task("check:ci", ["check-base", "test:frontend:ci"]);
 gulp.task("check:all", ["check-base", "test:frontend:all"]);

@@ -134,6 +134,12 @@ $ gulp check
 $ gulp dev
 ```
 
+Node demo:
+
+```
+$ node examples/demo.js
+```
+
 Navigations:
 
 * **Test Page**: http://127.0.0.1:4321/test/test.html
@@ -142,7 +148,7 @@ Navigations:
 Release process:
 
 * Bump versions in `package.json`, `bower.json`
-* Run `npm run-script dist`
+* Run `npm run-script everything`
 * Edit `HISTORY.md`
 * Run `gulp check:all`
 

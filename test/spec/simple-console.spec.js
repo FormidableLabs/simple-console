@@ -1,4 +1,8 @@
+var isNode = typeof window === "undefined";
+var root = isNode ? global : window;
+
 describe("simple-console", function () {
+
   describe("no real console logger", function () {
     // Track if bind is not available for certain platforms.
     var noBind = !Function.prototype.bind,
@@ -123,21 +127,23 @@ describe("simple-console", function () {
       });
 
       it("should invoke lots of functions and maybe log", function () {
-        window.console.log("log");
-        window.console.log.apply(window.console, ["log apply"]);
-        window.console.log.call(window.console, "log call");
-        window.console.warn("warn");
-        window.console.warn.apply(window.console, ["warn apply"]);
-        window.console.warn.call(window.console, "warn call");
-        window.console.error("error");
-        window.console.error.apply(window.console, ["error apply"]);
-        window.console.error.call(window.console, "error call");
+        root.console.log("log");
+        root.console.log.apply(root.console, ["log apply"]);
+        root.console.log.call(root.console, "log call");
+        root.console.warn("warn");
+        root.console.warn.apply(root.console, ["warn apply"]);
+        root.console.warn.call(root.console, "warn call");
+        root.console.error("error");
+        root.console.error.apply(root.console, ["error apply"]);
+        root.console.error.call(root.console, "error call");
       });
     });
 
     // **NOTE**: `console` is pretty much unusable past this point because
     // we've now overwritten it with something that noop's all operations.
     describe("monkey patch and noop console", function () {
+      // Skip if Node so Gulp, etc. still usable...
+      if (isNode) { return; }
 
       before(function () {
         /*eslint-disable no-new*/
@@ -149,15 +155,15 @@ describe("simple-console", function () {
       });
 
       it("should invoke lots of functions and maybe log", function () {
-        window.console.log("log");
-        window.console.log.apply(window.console, ["log apply"]);
-        window.console.log.call(window.console, "log call");
-        window.console.warn("warn");
-        window.console.warn.apply(window.console, ["warn apply"]);
-        window.console.warn.call(window.console, "warn call");
-        window.console.error("error");
-        window.console.error.apply(window.console, ["error apply"]);
-        window.console.error.call(window.console, "error call");
+        root.console.log("log");
+        root.console.log.apply(root.console, ["log apply"]);
+        root.console.log.call(root.console, "log call");
+        root.console.warn("warn");
+        root.console.warn.apply(root.console, ["warn apply"]);
+        root.console.warn.call(root.console, "warn call");
+        root.console.error("error");
+        root.console.error.apply(root.console, ["error apply"]);
+        root.console.error.call(root.console, "error call");
       });
     });
   });

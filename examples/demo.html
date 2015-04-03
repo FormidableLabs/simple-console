@@ -6,27 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Simple Console</title>
-    <script src="../dist/simple-console.min.js"></script>
-    <script>
-      var con = new SimpleConsole();
-      con.log("Hello World!");
-      con.info("An information message!");
-      con.warn("A warning");
-      con.error("An error string");
-      con.error(new Error("An error object"));
-    </script>
   </head>
   <body>
     <p>Open the console and try things out. We already do:</p>
-    <pre>
-      <code>
-        var con = new SimpleConsole();
-        con.log("Hello World!");
-        con.info("An information message!");
-        con.warn("A warning");
-        con.error("An error string");
-        con.error(new Error("An error object"));
-      </code>
-    </pre>
+    <pre><code id="code-example"></code></pre>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="../dist/simple-console.min.js"></script>
+    <script>
+      $.getScript("./demo.js", function (script) {
+        script = script.replace(/\/\*node-start[\s\S]*node-end\*\//gi, "");
+        script = $.trim(script);
+
+        $("#code-example").text(script);
+      });
+    </script>
   </body>
 </html>

@@ -63,7 +63,7 @@
   "requireCapitalizedConstructors": true,
   "requireOperatorBeforeLineBreak": true,
   "requireParenthesesAroundIIFE": true,
-  "safeContextKeyword": ["self"],
+  "safeContextKeyword": ["self", "root"],
   "validateIndentation": 2,
   "validateQuoteMarks": "\""
 }
