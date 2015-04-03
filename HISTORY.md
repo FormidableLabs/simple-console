@@ -1,6 +1,11 @@
 History
 =======
 
+## Current
+
+* Make Node.js compatible.
+* Aggregate test coverage results for different browsers / server.
+
 ## 0.1.0
 
 * Refactor `SimpleConsole` to take options object with explicit `patch` and

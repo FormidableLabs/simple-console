@@ -49,7 +49,7 @@
     var target = {};
     if (opts.patch) {
       // Ensure that `window.console` is actually created, and set as target.
-      target = window.console = window.console || target;
+      target = root.console = root.console || target;
     }
 
     // Patch properties, methods.
@@ -103,7 +103,7 @@
   var _console;
   SimpleConsole.prototype._getConsole = function () {
     if (typeof _console !== "undefined") { return _console; }
-    _console = window.console || null;
+    _console = root.console || null;
     return _console;
   };
 
