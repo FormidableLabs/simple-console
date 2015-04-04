@@ -134,10 +134,11 @@ $ gulp check
 $ gulp dev
 ```
 
-Node demo:
+Execute the demo code:
 
 ```
 $ node examples/demo.js
+$ phantomjs examples/demo.js
 ```
 
 Navigations:

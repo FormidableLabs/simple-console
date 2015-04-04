@@ -14,7 +14,7 @@
     <script src="../dist/simple-console.min.js"></script>
     <script>
       $.getScript("./demo.js", function (script) {
-        script = script.replace(/\/\*node-start[\s\S]*node-end\*\//gi, "");
+        script = script.replace(/\/\*adapter-start[\s\S]*?adapter-end\*\//gi, "");
         script = $.trim(script);
 
         $("#code-example").text(script);
